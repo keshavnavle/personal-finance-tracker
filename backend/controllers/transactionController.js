@@ -19,6 +19,7 @@ const addTransaction = async (req, res) => {
       amount,
       type,
       category,
+      user: req.user.id,
     });
 
     res.status(201).json({
@@ -34,10 +35,12 @@ const addTransaction = async (req, res) => {
   }
 };
 
-// Get All Transactions
+// Get Only Logged User Transactions
 const getTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.find().sort({ createdAt: -1 });
+    const transactions = await Transaction.find({
+      user: req.user.id,
+    }).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -54,7 +57,10 @@ const getTransactions = async (req, res) => {
 // Delete Transaction
 const deleteTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.findByIdAndDelete(req.params.id);
+    const transaction = await Transaction.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!transaction) {
       return res.status(404).json({
@@ -76,11 +82,13 @@ const deleteTransaction = async (req, res) => {
 };
 
 // Update Transaction
-
 const updateTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.findByIdAndUpdate(
-      req.params.id,
+    const transaction = await Transaction.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        user: req.user.id,
+      },
       req.body,
       {
         new: true,
