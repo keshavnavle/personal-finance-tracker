@@ -14,3 +14,35 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+/* Mobile Responsive Improvements */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Better mobile buttons */
+button {
+  cursor: pointer;
+}
+
+/* Mobile input improvement */
+input,
+select {
+  font-size: 16px;
+}
+
+/* Small screen adjustments */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  button {
+    min-height: 48px;
+  }
+}

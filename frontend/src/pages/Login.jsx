@@ -1,12 +1,13 @@
 /** @format */
 
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
 function Login() {
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -67,19 +68,45 @@ function Login() {
             className="w-full px-5 py-4 rounded-xl bg-white/10 text-white placeholder-gray-300 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full px-5 py-4 rounded-xl bg-white/10 text-white placeholder-gray-300 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="w-full px-5 py-4 pr-14 rounded-xl bg-white/10 text-white placeholder-gray-300 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300">
+              {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+            </button>
+          </div>
 
           <button
             type="submit"
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-lg hover:scale-105 transition duration-300">
+            className="
+  w-full
+  py-3.5
+  sm:py-4
+  rounded-xl
+  bg-gradient-to-r
+  from-purple-500
+  to-pink-500
+  text-white
+  font-bold
+  text-base
+  sm:text-lg
+  shadow-lg
+  hover:scale-105
+  active:scale-95
+  transition
+  duration-300
+  ">
             Login
           </button>
         </form>

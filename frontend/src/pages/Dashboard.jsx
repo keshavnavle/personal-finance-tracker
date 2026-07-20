@@ -344,90 +344,107 @@ mt-3
                 <div
                   key={item._id}
                   className="
-bg-slate-800
-rounded-2xl
-p-5
-flex
-flex-col
-md:flex-row
-justify-between
-gap-5
-items-start
-md:items-center
-overflow-hidden
-">
-                  <div>
-                    <h3 className="text-xl font-semibold">{item.title}</h3>
+    bg-slate-800/80
+    border
+    border-slate-700
+    rounded-3xl
+    p-5
+    shadow-lg
+    hover:border-purple-500
+    transition
+    duration-300
+    ">
+                  {/* Top Section */}
+                  <div className="flex justify-between items-start gap-3">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white">
+                        {item.title}
+                      </h3>
 
-                    <p className="text-gray-400">{item.category}</p>
+                      <p className="text-gray-400 text-sm mt-1">
+                        {item.category}
+                      </p>
+                    </div>
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      📅{" "}
+                    <div className="text-right">
+                      <p
+                        className={`text-xl sm:text-2xl font-bold ${
+                          item.type === "Income"
+                            ? "text-green-400"
+                            : "text-red-400"
+                        }`}>
+                        {item.type === "Income" ? "+" : "-"} ₹{item.amount}
+                      </p>
+
+                      <span
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          item.type === "Income"
+                            ? "bg-green-500/20 text-green-400"
+                            : "bg-red-500/20 text-red-400"
+                        }`}>
+                        {item.type}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Date */}
+
+                  <div
+                    className="
+    mt-5
+    flex
+    items-center
+    text-sm
+    text-gray-400
+    ">
+                    📅
+                    <span className="ml-2">
                       {new Date(item.date).toLocaleDateString("en-IN", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })}
-                    </p>
+                    </span>
                   </div>
+
+                  {/* Buttons */}
 
                   <div
                     className="
-flex
-flex-wrap
-items-center
-gap-4
-">
-                    <div className="text-right">
-                      <p
-                        className={
-                          item.type === "Income"
-                            ? "text-green-400 text-2xl font-bold"
-                            : "text-red-400 text-2xl font-bold"
-                        }>
-                        ₹{item.amount}
-                      </p>
-
-                      <span
-                        className={
-                          item.type === "Income"
-                            ? "text-green-400"
-                            : "text-red-400"
-                        }>
-                        {item.type}
-                      </span>
-                    </div>
-
-                    {/* Edit Button */}
-
+    mt-5
+    flex
+    gap-3
+    ">
                     <button
                       onClick={() => setEditTransaction(item)}
                       className="
-bg-blue-600
-hover:bg-blue-700
-px-5
-py-2
-rounded-xl
-font-semibold
-transition
-">
-                      Edit
+        flex-1
+        bg-blue-600
+        hover:bg-blue-700
+        py-2.5
+        rounded-xl
+        text-sm
+        font-semibold
+        transition
+        active:scale-95
+        ">
+                      ✏️ Edit
                     </button>
-
-                    {/* Delete Button */}
 
                     <button
                       onClick={() => deleteTransaction(item._id)}
                       className="
-bg-red-600
-hover:bg-red-700
-px-5
-py-2
-rounded-xl
-font-semibold
-transition
-">
-                      Delete
+        flex-1
+        bg-red-600
+        hover:bg-red-700
+        py-2.5
+        rounded-xl
+        text-sm
+        font-semibold
+        transition
+        active:scale-95
+        ">
+                      🗑 Delete
                     </button>
                   </div>
                 </div>
