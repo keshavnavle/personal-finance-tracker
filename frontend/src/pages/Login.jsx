@@ -37,7 +37,11 @@ function Login() {
         navigate("/dashboard");
       }, 1000);
     } catch (error) {
-      setMessage(error.response?.data?.message || "Login Failed");
+      console.log("Login Error:", error);
+      console.log("Response:", error.response);
+      console.log("Data:", error.response?.data);
+
+      setMessage(error.response?.data?.message || error.message);
     }
   };
 
