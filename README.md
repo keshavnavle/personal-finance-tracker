@@ -1,12 +1,10 @@
+<!-- @format -->
+
 # 💰 Personal Finance Tracker
 
-A full-stack **MERN Stack Personal Finance Tracker** that helps users manage income, expenses, and financial activities with a clean and responsive dashboard.
+A full-stack MERN Stack Personal Finance Tracker that helps users manage income, expenses, and financial activities with a clean and responsive dashboard.
 
-## 🚀 Live Demo
-
-Coming soon...
-
-## 📌 Features
+## 🚀 Features
 
 ✅ User Authentication (Register & Login)  
 ✅ JWT Based Protected Routes  
@@ -19,7 +17,7 @@ Coming soon...
 ✅ Dashboard with Balance Summary  
 ✅ Income and Expense Analytics  
 ✅ Interactive Charts  
-✅ Responsive Design for Mobile and Desktop  
+✅ Responsive Design for Mobile and Desktop
 
 ---
 
@@ -44,15 +42,29 @@ Coming soon...
 ---
 
 ## 📂 Project Structure
+
 personal-finance-tracker
 
-├── frontend
 │
-└── backend
+├── frontend
+│ ├── src
+│ ├── public
+│ ├── package.json
+│ └── vite.config.js
+│
+├── backend
+│ ├── controllers
+│ ├── models
+│ ├── routes
+│ ├── middleware
+│ ├── server.js
+│ └── package.json
+│
+├── .gitignore
+└── README.md
 
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
+frontend → React + Tailwind UI
+backend → Node + Express API
+models → MongoDB schemas
+routes → API endpoints
+controllers → Logic handling
