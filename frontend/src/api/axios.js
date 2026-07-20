@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://personal-finance-tracker-backend-a7pd.onrender.com",
 });
 
 export default API;
