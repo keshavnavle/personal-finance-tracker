@@ -248,173 +248,215 @@ mt-3
         </div>
         {/* Recent Transactions */}
         <div className="mt-12">
+          {/* Header */}
           <div
             className="
-flex
-justify-between
-items-center
-mb-6
-">
-            <h2 className="text-3xl sm:text-4xl font-bold">
-              Recent Transactions
-            </h2>
-
-            <p className="text-gray-400 mt-2 text-sm sm:text-base">
-              Manage your income and expenses
-            </p>
-
-            <div className="w-full mb-6">
-              <input
-                type="text"
-                placeholder="🔍 Search title or category..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+    flex
+    flex-col
+    lg:flex-row
+    lg:items-center
+    lg:justify-between
+    gap-5
+    mb-8
+  ">
+            <div>
+              <h2
                 className="
-      w-full
-      rounded-2xl
+        text-3xl
+        sm:text-4xl
+        font-bold
+        text-white
+      ">
+                Recent Transactions
+              </h2>
+
+              <p
+                className="
+        text-gray-400
+        mt-2
+        text-sm
+        sm:text-base
+      ">
+                Manage your income and expenses easily
+              </p>
+            </div>
+
+            {/* Records */}
+            <div
+              className="
       bg-slate-800
       border
       border-slate-700
       px-5
       py-3
-      text-white
-      placeholder:text-gray-400
-      focus:outline-none
-      focus:ring-2
-      focus:ring-purple-500
-      transition
-    "
-              />
+      rounded-2xl
+      text-gray-300
+      font-semibold
+      w-fit
+    ">
+              📊 {filteredTransactions.length} Records
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              {" "}
+          {/* Search */}
+
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="🔍 Search title or category..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="
+        w-full
+        rounded-2xl
+        bg-slate-800
+        border
+        border-slate-700
+        px-5
+        py-4
+        text-white
+        placeholder-gray-400
+        focus:outline-none
+        focus:ring-2
+        focus:ring-purple-500
+        transition
+      "
+            />
+          </div>
+
+          {/* Filters */}
+
+          <div
+            className="
+    flex
+    flex-col
+    lg:flex-row
+    gap-4
+    mb-8
+  ">
+            {/* Buttons */}
+
+            <div
+              className="
+      flex
+      flex-col
+      sm:flex-row
+      gap-3
+      flex-1
+    ">
               <button
                 onClick={() => setFilter("All")}
                 className={`
-    flex-1
-    sm:flex-none
-    min-w-[100px]
-    py-3
-    rounded-xl
-    font-semibold
-    transition-all
-    duration-300
-    ${
-      filter === "All"
-        ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg"
-        : "bg-slate-800 text-gray-300 hover:bg-slate-700"
-    }
-  `}>
+          flex-1
+          py-3
+          rounded-2xl
+          font-semibold
+          transition
+          ${
+            filter === "All"
+              ? "bg-gradient-to-r from-purple-600 to-pink-600"
+              : "bg-slate-800 hover:bg-slate-700"
+          }
+        `}>
                 📋 All
               </button>
+
               <button
                 onClick={() => setFilter("Income")}
                 className={`
-    flex-1
-    sm:flex-none
-    min-w-[100px]
-    py-3
-    rounded-xl
-    font-semibold
-    transition-all
-    duration-300
-    ${
-      filter === "Income"
-        ? "bg-green-600 text-white shadow-lg"
-        : "bg-slate-800 text-gray-300 hover:bg-slate-700"
-    }
-  `}>
+          flex-1
+          py-3
+          rounded-2xl
+          font-semibold
+          transition
+          ${
+            filter === "Income"
+              ? "bg-green-600"
+              : "bg-slate-800 hover:bg-slate-700"
+          }
+        `}>
                 💰 Income
               </button>
+
               <button
                 onClick={() => setFilter("Expense")}
                 className={`
-    flex-1
-    sm:flex-none
-    min-w-[100px]
-    py-3
-    rounded-xl
-    font-semibold
-    transition-all
-    duration-300
-    ${
-      filter === "Expense"
-        ? "bg-red-600 text-white shadow-lg"
-        : "bg-slate-800 text-gray-300 hover:bg-slate-700"
-    }
-  `}>
+          flex-1
+          py-3
+          rounded-2xl
+          font-semibold
+          transition
+          ${
+            filter === "Expense"
+              ? "bg-red-600"
+              : "bg-slate-800 hover:bg-slate-700"
+          }
+        `}>
                 💸 Expense
               </button>
-              <div className="mb-8">
-                <select
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="
-      w-full
-      sm:w-64
-      bg-slate-800
-      border
-      border-slate-700
-      rounded-2xl
-      px-5
-      py-3
-      text-white
-      font-medium
-      focus:outline-none
-      focus:ring-2
-      focus:ring-purple-500
-      transition
-      cursor-pointer
-      hover:border-purple-400
-    ">
-                  <option value="All">All Categories</option>
-                  <option value="Salary">Salary</option>
-                  <option value="Food">Food</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Bills">Bills</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Entertainment">Entertainment</option>
-                </select>
-              </div>
             </div>
 
-            <div className="mb-8">
-              <p className="text-sm text-gray-400 mb-2 font-medium">
-                📅 Filter by Month
-              </p>
-              <select
-                value={monthFilter}
-                onChange={(e) => setMonthFilter(e.target.value)}
-                className="
-      w-full
-      sm:w-64
-      bg-slate-800
-      border
-      border-slate-700
-      rounded-2xl
-      px-5
-      py-3
-      text-white
-      font-medium
-      focus:outline-none
-      focus:ring-2
-      focus:ring-purple-500
-      transition
-      cursor-pointer
-      hover:border-purple-400
-    ">
-                {availableMonths.map((month) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {/* Category */}
 
-            <div className="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-sm text-gray-300">
-              📊 {filteredTransactions.length} Records
-            </div>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="
+        w-full
+        lg:w-64
+        bg-slate-800
+        border
+        border-slate-700
+        rounded-2xl
+        px-5
+        py-3
+        text-white
+        font-medium
+        outline-none
+        focus:ring-2
+        focus:ring-purple-500
+      ">
+              <option value="All">All Categories</option>
+
+              <option value="Salary">Salary</option>
+
+              <option value="Food">Food</option>
+
+              <option value="Shopping">Shopping</option>
+
+              <option value="Bills">Bills</option>
+
+              <option value="Travel">Travel</option>
+
+              <option value="Entertainment">Entertainment</option>
+            </select>
+
+            {/* Month */}
+
+            <select
+              value={monthFilter}
+              onChange={(e) => setMonthFilter(e.target.value)}
+              className="
+        w-full
+        lg:w-64
+        bg-slate-800
+        border
+        border-slate-700
+        rounded-2xl
+        px-5
+        py-3
+        text-white
+        font-medium
+        outline-none
+        focus:ring-2
+        focus:ring-purple-500
+      ">
+              {availableMonths.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
 
           {transactions.length === 0 ? (
