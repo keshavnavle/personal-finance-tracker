@@ -24,6 +24,8 @@ function Dashboard() {
 
   const [categoryFilter, setCategoryFilter] = useState("All");
 
+  const [monthFilter, setMonthFilter] = useState("All");
+
   // Fetch Transactions
 
   const fetchTransactions = async () => {
@@ -98,6 +100,18 @@ function Dashboard() {
       ? 0
       : ((expenses / (income + expenses)) * 100).toFixed(1);
 
+  const availableMonths = [
+    "All",
+    ...new Set(
+      transactions.map((item) =>
+        new Date(item.date).toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        }),
+      ),
+    ),
+  ];
+
   const filteredTransactions = transactions.filter((item) => {
     const matchesSearch =
       item.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -109,7 +123,15 @@ function Dashboard() {
       categoryFilter === "All" ||
       item.category.toLowerCase() === categoryFilter.toLowerCase();
 
-    return matchesSearch && matchesType && matchesCategory;
+    const transactionMonth = new Date(item.date).toLocaleString("default", {
+      month: "long",
+      year: "numeric",
+    });
+
+    const matchesMonth =
+      monthFilter === "All" || transactionMonth === monthFilter;
+
+    return matchesSearch && matchesType && matchesCategory && matchesMonth;
   });
 
   return (
@@ -233,69 +255,119 @@ justify-between
 items-center
 mb-6
 ">
-            <h2
-              className="
-text-3xl
-font-bold
-">
+            <h2 className="text-3xl sm:text-4xl font-bold">
               Recent Transactions
             </h2>
 
-            <div className="mt-5 mb-8">
+            <p className="text-gray-400 mt-2 text-sm sm:text-base">
+              Manage your income and expenses
+            </p>
+
+            <div className="w-full mb-6">
               <input
                 type="text"
-                placeholder="🔍 Search transactions..."
+                placeholder="🔍 Search title or category..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="
       w-full
-      p-4
-      rounded-xl
+      rounded-2xl
       bg-slate-800
       border
       border-slate-700
+      px-5
+      py-3
+      text-white
+      placeholder:text-gray-400
       focus:outline-none
-      focus:border-purple-500
+      focus:ring-2
+      focus:ring-purple-500
+      transition
     "
               />
             </div>
 
-            <div className="flex gap-3 mb-8 flex-wrap">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              {" "}
               <button
                 onClick={() => setFilter("All")}
-                className={`px-5 py-2 rounded-xl font-semibold ${
-                  filter === "All"
-                    ? "bg-purple-600"
-                    : "bg-slate-800 hover:bg-slate-700"
-                }`}>
-                All
+                className={`
+    flex-1
+    sm:flex-none
+    min-w-[100px]
+    py-3
+    rounded-xl
+    font-semibold
+    transition-all
+    duration-300
+    ${
+      filter === "All"
+        ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg"
+        : "bg-slate-800 text-gray-300 hover:bg-slate-700"
+    }
+  `}>
+                📋 All
               </button>
-
               <button
                 onClick={() => setFilter("Income")}
-                className={`px-5 py-2 rounded-xl font-semibold ${
-                  filter === "Income"
-                    ? "bg-green-600"
-                    : "bg-slate-800 hover:bg-slate-700"
-                }`}>
-                Income
+                className={`
+    flex-1
+    sm:flex-none
+    min-w-[100px]
+    py-3
+    rounded-xl
+    font-semibold
+    transition-all
+    duration-300
+    ${
+      filter === "Income"
+        ? "bg-green-600 text-white shadow-lg"
+        : "bg-slate-800 text-gray-300 hover:bg-slate-700"
+    }
+  `}>
+                💰 Income
               </button>
-
               <button
                 onClick={() => setFilter("Expense")}
-                className={`px-5 py-2 rounded-xl font-semibold ${
-                  filter === "Expense"
-                    ? "bg-red-600"
-                    : "bg-slate-800 hover:bg-slate-700"
-                }`}>
-                Expense
+                className={`
+    flex-1
+    sm:flex-none
+    min-w-[100px]
+    py-3
+    rounded-xl
+    font-semibold
+    transition-all
+    duration-300
+    ${
+      filter === "Expense"
+        ? "bg-red-600 text-white shadow-lg"
+        : "bg-slate-800 text-gray-300 hover:bg-slate-700"
+    }
+  `}>
+                💸 Expense
               </button>
-
               <div className="mb-8">
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3">
+                  className="
+      w-full
+      sm:w-64
+      bg-slate-800
+      border
+      border-slate-700
+      rounded-2xl
+      px-5
+      py-3
+      text-white
+      font-medium
+      focus:outline-none
+      focus:ring-2
+      focus:ring-purple-500
+      transition
+      cursor-pointer
+      hover:border-purple-400
+    ">
                   <option value="All">All Categories</option>
                   <option value="Salary">Salary</option>
                   <option value="Food">Food</option>
@@ -307,12 +379,42 @@ font-bold
               </div>
             </div>
 
-            <span
-              className="
-text-gray-400
-">
-              {transactions.length} Records
-            </span>
+            <div className="mb-8">
+              <p className="text-sm text-gray-400 mb-2 font-medium">
+                📅 Filter by Month
+              </p>
+              <select
+                value={monthFilter}
+                onChange={(e) => setMonthFilter(e.target.value)}
+                className="
+      w-full
+      sm:w-64
+      bg-slate-800
+      border
+      border-slate-700
+      rounded-2xl
+      px-5
+      py-3
+      text-white
+      font-medium
+      focus:outline-none
+      focus:ring-2
+      focus:ring-purple-500
+      transition
+      cursor-pointer
+      hover:border-purple-400
+    ">
+                {availableMonths.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-sm text-gray-300">
+              📊 {filteredTransactions.length} Records
+            </div>
           </div>
 
           {transactions.length === 0 ? (
@@ -344,29 +446,47 @@ mt-3
                 <div
                   key={item._id}
                   className="
-    bg-slate-800/80
-    border
-    border-slate-700
-    rounded-3xl
-    p-5
-    shadow-lg
-    hover:border-purple-500
-    transition
-    duration-300
+      bg-slate-800/80
+      border
+      border-slate-700
+      hover:border-purple-500
+      rounded-3xl
+      p-5
+      shadow-lg
+      hover:shadow-purple-500/20
+      transition-all
+      duration-300
     ">
                   {/* Top Section */}
-                  <div className="flex justify-between items-start gap-3">
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white">
+
+                  <div className="flex justify-between items-start gap-4">
+                    {/* Left */}
+
+                    <div className="flex-1">
+                      <h3 className="text-lg sm:text-xl font-bold text-white break-words">
                         {item.title}
                       </h3>
 
                       <p className="text-gray-400 text-sm mt-1">
                         {item.category}
                       </p>
+
+                      <div className="flex items-center mt-3 text-gray-400 text-sm">
+                        <span>📅</span>
+
+                        <span className="ml-2">
+                          {new Date(item.date).toLocaleDateString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="text-right">
+                    {/* Right */}
+
+                    <div className="text-right min-w-[120px]">
                       <p
                         className={`text-xl sm:text-2xl font-bold ${
                           item.type === "Income"
@@ -377,7 +497,7 @@ mt-3
                       </p>
 
                       <span
-                        className={`text-xs px-3 py-1 rounded-full ${
+                        className={`inline-block mt-2 text-xs px-3 py-1 rounded-full font-semibold ${
                           item.type === "Income"
                             ? "bg-green-500/20 text-green-400"
                             : "bg-red-500/20 text-red-400"
@@ -387,46 +507,27 @@ mt-3
                     </div>
                   </div>
 
-                  {/* Date */}
+                  {/* Divider */}
 
-                  <div
-                    className="
-    mt-5
-    flex
-    items-center
-    text-sm
-    text-gray-400
-    ">
-                    📅
-                    <span className="ml-2">
-                      {new Date(item.date).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
+                  <div className="border-t border-slate-700 my-5"></div>
 
                   {/* Buttons */}
 
-                  <div
-                    className="
-    mt-5
-    flex
-    gap-3
-    ">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       onClick={() => setEditTransaction(item)}
                       className="
-        flex-1
-        bg-blue-600
-        hover:bg-blue-700
-        py-2.5
-        rounded-xl
-        text-sm
-        font-semibold
-        transition
-        active:scale-95
+          flex-1
+          bg-gradient-to-r
+          from-blue-600
+          to-cyan-500
+          hover:scale-105
+          transition-all
+          duration-300
+          py-3
+          rounded-2xl
+          font-bold
+          shadow-lg
         ">
                       ✏️ Edit
                     </button>
@@ -434,15 +535,17 @@ mt-3
                     <button
                       onClick={() => deleteTransaction(item._id)}
                       className="
-        flex-1
-        bg-red-600
-        hover:bg-red-700
-        py-2.5
-        rounded-xl
-        text-sm
-        font-semibold
-        transition
-        active:scale-95
+          flex-1
+          bg-gradient-to-r
+          from-red-600
+          to-pink-600
+          hover:scale-105
+          transition-all
+          duration-300
+          py-3
+          rounded-2xl
+          font-bold
+          shadow-lg
         ">
                       🗑 Delete
                     </button>
